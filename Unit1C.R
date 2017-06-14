@@ -1,0 +1,36 @@
+library(readr)
+CPSData <- read.csv("C:/Users/Nishank/Desktop/SNU/RStuff/CPSData.csv", stringsAsFactors = FALSE)
+nrow(CPSData)
+head(CPSData)
+names(CPSData)
+table(CPSData$Industry)
+sort(table(CPSData$State))
+table(CPSData$Citizenship)
+table(CPSData$Hispanic)
+table(CPSData$Race, CPSData$Hispanic)
+is.na(CPSData$Married)
+table(CPSData$Region, is.na(CPSData$Married))
+tapply(CPSData$State,is.na(CPSData$MetroAreaCode),mean)
+
+MetroAreaCodes <- read.csv("C:/Users/Nishank/Desktop/SNU/RStuff/MetroAreaCodes.csv", stringsAsFactors = FALSE)
+CountryCodes <- read.csv("C:/Users/Nishank/Desktop/SNU/RStuff/CountryCodes.csv", stringsAsFactors = FALSE)
+
+nrow(MetroAreaCodes)
+nrow(CountryCodes)
+CPSData <-  merge(CPSData, MetroAreaCodes, by.x="MetroAreaCode", by.y="Code", all.x=TRUE)
+str(CPSData)
+table(is.na(CPSData$MetroArea))
+sort(table(CPSData$MetroArea))
+
+sort(tapply(CPSData$Hispanic,CPSData$MetroArea, mean))
+sort(tapply(CPSData$Education == "No high school diploma",CPSData$MetroArea, mean,na.rm = TRUE))
+
+CPSData <-  merge(CPSData, CountryCodes, by.x="CountryOfBirthCode", by.y="Code", all.x=TRUE)
+names(CPSData)
+table(is.na(CPSData$Country))
+sort(table(CPSData$Country))
+
+table(CPSData$MetroArea == "New York-Northern New Jersey-Long Island, NY-NJ-PA", CPSData$Country=="United States")
+tapply(CPSData$MetroArea == "New York-Northern New Jersey-Long Island, NY-NJ-PA", CPSData$Country == "United States",mean, na.rm = TRUE)
+
+sort(table(CPSData$Country == "India", CPSData$MetroArea))
