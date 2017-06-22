@@ -25,3 +25,10 @@ tapply(predictTrain, qualityTrain$PoorCare, mean)
 QualityLog2 <- glm(PoorCare ~ StartedOnCombination + ProviderCount, data = qualityTrain, family = binomial)
 summary(QualityLog2)
 table(qualityTrain$PoorCare, predictTrain > 0.5)
+
+library(ROCR)
+ROCRPred <- prediction(predictTrain, qualityTrain$PoorCare)
+
+#axes of the ROC curve
+ROCRPerf <- performance(ROCRPred,"tpr","fpr")
+plot(ROCRPerf, colorize = TRUE, print.cutoffs.at = seq(0,1,0.1), text.adj = c(-0.2,1.7))
