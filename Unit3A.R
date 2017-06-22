@@ -32,3 +32,10 @@ ROCRPred <- prediction(predictTrain, qualityTrain$PoorCare)
 #axes of the ROC curve
 ROCRPerf <- performance(ROCRPred,"tpr","fpr")
 plot(ROCRPerf, colorize = TRUE, print.cutoffs.at = seq(0,1,0.1), text.adj = c(-0.2,1.7))
+
+predictTest <- predict(QualityLog,type = "response", newdata = qualityTest)
+#for the area under the curve (measures accuracy)
+
+ROCRpredTest <-  prediction(predictTest, qualityTest$PoorCare)
+
+auc <-  as.numeric(performance(ROCRpredTest, "auc")@y.values)
