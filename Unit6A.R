@@ -27,4 +27,9 @@ clusterGroups[257]
 cluster2 <- subset(movies,clusterGroups==2)
 cluster2$Title[1:10]
 
-
+clusterGroups2 <- cutree(clusterMovies, k = 2)
+summary(clusterGroups2)
+table(clusterGroups2)
+tapply(movies$Action, clusterGroups2,mean)
+tapply(movies$Comedy, clusterGroups2,mean)
+tapply(movies$Drama, clusterGroups2,mean)
