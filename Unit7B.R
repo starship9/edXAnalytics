@@ -33,3 +33,20 @@ DayHourCounts$Var1 <- factor(DayHourCounts$Var1, ordered = TRUE, levels = c("Mon
 
 #Heatmap
 ggplot(data = DayHourCounts, mapping = aes(x = Hour, y = Var1)) + geom_tile(aes(fill = Freq)) + scale_fill_gradient(name = "Total MV Thefts", low = "white",high = "red") + theme(axis.title.y = element_blank())
+
+library(maps)
+library(ggmap)
+
+Chicago <- get_map(location = "Chicago",zoom = 11)
+ggmap(Chicago) + geom_point(data = mvt[1:100,],mapping  =aes(x = Longitude, y = Latitude))
+
+LatLonCounts <- as.data.frame(table(round(mvt$Longitude,2),round(mvt$Latitude,2)))
+str(LatLonCounts)
+
+LatLonCounts$long <- as.numeric(as.character(LatLonCounts$Var1))
+LatLonCounts$lat <- as.numeric(as.character(LatLonCounts$Var2))
+
+ggmap(Chicago) + geom_point(data = LatLonCounts, mapping = aes(x = long, y = lat, color = Freq, size = Freq)) + scale_color_gradient(low = "yellow",high = "red")
+
+#heatmap using tiles
+ggmap(Chicaco) + geom_tile(data = LatLonCounts, mapping = aes(x = long, y = lat, alpha = Freq),fill = "red")
